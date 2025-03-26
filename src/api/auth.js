@@ -9,6 +9,12 @@ import {
 } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from 'firebase/functions';
+import { 
+  GoogleAuthProvider,
+  signInWithPopup
+} from 'firebase/auth';
+
+
 
 // Configuração do Firebase (substitua se necessário)
 const firebaseConfig = {
@@ -25,6 +31,25 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const functions = getFunctions(app);
+
+// autenticacao com o gogle 
+export const loginComGoogle = async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    // Dados adicionais do usuário
+    const user = {
+      uid: result.user.uid,
+      displayName: result.user.displayName,
+      email: result.user.email,
+      photoURL: result.user.photoURL
+    };
+    return user;
+  } catch (error) {
+    console.error("Erro no login com Google:", error);
+    throw error;
+  }
+};
 
 // Funções de Autenticação
 export const cadastrarUsuario = async (email, senha, dadosUsuario) => {
