@@ -1,6 +1,6 @@
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
-import { db, functions } from './auth'; // Sua configuração do Firebase
+import { functions } from './auth'; // Sua configuração do Firebase
 
 // Função para gerar subdomínio
 export const gerarSubdominio = async (userId, nomeUsuario) => {

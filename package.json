@@ -10,6 +10,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@firebase/functions": "^0.12.3",
     "firebase": "^11.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

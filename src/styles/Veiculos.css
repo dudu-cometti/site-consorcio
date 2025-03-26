@@ -1,0 +1,72 @@
+.veiculos-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .veiculos-container h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .loading, .error {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 50px;
+  }
+  
+  .error {
+    color: #e74c3c;
+  }
+  
+  .filtros-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .filtros-container select,
+  .filtros-container input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    min-width: 150px;
+  }
+  
+  .filtros-container button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+  }
+  
+  .filtros-container button:hover {
+    background-color: #2980b9;
+  }
+  
+  .lista-veiculos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .filtros-container {
+      flex-direction: column;
+    }
+    
+    .lista-veiculos {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+  }

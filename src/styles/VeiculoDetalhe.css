@@ -1,0 +1,53 @@
+.veiculo-detalhes {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+  }
+  
+  .veiculo-imagem {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+    max-height: 400px;
+  }
+  
+  .veiculo-info h2 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+  
+  .veiculo-info .preco {
+    font-size: 1.5rem;
+    color: #27ae60;
+    margin: 15px 0;
+  }
+  
+  .veiculo-info .detalhes-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .veiculo-info .detalhes-list li {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #ecf0f1;
+  }
+  
+  .veiculo-info .detalhes-list strong {
+    color: #2c3e50;
+    min-width: 120px;
+    display: inline-block;
+  }
+  
+  @media (max-width: 768px) {
+    .veiculo-detalhes {
+      grid-template-columns: 1fr;
+      padding: 15px;
+    }
+  }

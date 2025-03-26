@@ -1,74 +1,88 @@
+// src/api/auth.js
 import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
-import { getFunctions } from 'firebase/functions';
+import { getFunctions, httpsCallable } from 'firebase/functions';
 
-// Configuração do Firebase (substitua pelos seus dados)
+// Configuração do Firebase (substitua se necessário)
 const firebaseConfig = {
   apiKey: "AIzaSyAJ5KpYXaDG2qjnOGWRkdfeMRk18yiLBuU",
   authDomain: "site-consorcio-comettidigital.firebaseapp.com",
   projectId: "site-consorcio-comettidigital",
-  storageBucket: "site-consorcio-comettidigital.firebasestorage.app",
+  storageBucket: "site-consorcio-comettidigital.appspot.com",
   messagingSenderId: "424595067695",
   appId: "1:424595067695:web:444eef95f6a31f07ac87da"
 };
 
-const functions = getFunctions(app);
-
-// Inicializa o Firebase
+// Inicializações
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const functions = getFunctions(app);
 
-// Função para cadastrar um novo usuário
+// Funções de Autenticação
 export const cadastrarUsuario = async (email, senha, dadosUsuario) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
     const user = userCredential.user;
 
-    // Salva os dados do usuário no Firestore
     await setDoc(doc(db, "usuarios", user.uid), {
-      nome: dadosUsuario.nome,
-      telefone: dadosUsuario.telefone,
-      empresa: dadosUsuario.empresa,
-      instagram: dadosUsuario.instagram,
-      foto: dadosUsuario.foto,
-      classe: dadosUsuario.classe,
+      ...dadosUsuario,
+      uid: user.uid,
+      dataCriacao: new Date()
     });
 
     return user;
   } catch (error) {
-    console.error("Erro ao cadastrar usuário:", error);
+    console.error("Erro no cadastro:", error);
     throw error;
   }
 };
 
-// Função para fazer login
 export const fazerLogin = async (email, senha) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, senha);
     return userCredential.user;
   } catch (error) {
-    console.error("Erro ao fazer login:", error);
+    console.error("Erro no login:", error);
     throw error;
   }
 };
 
-// Função para buscar dados do usuário
+export const logout = async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error("Erro ao deslogar:", error);
+    throw error;
+  }
+};
+
+// Funções do Firestore
 export const buscarDadosUsuario = async (userId) => {
   try {
     const docRef = doc(db, "usuarios", userId);
     const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      return docSnap.data();
-    } else {
-      throw new Error("Usuário não encontrado.");
-    }
+    return docSnap.exists() ? docSnap.data() : null;
   } catch (error) {
-    console.error("Erro ao buscar dados do usuário:", error);
+    console.error("Erro ao buscar usuário:", error);
     throw error;
   }
 };
-export {app, auth, db, functions
 
-}
+// Funções do Cloud Functions
+export const criarSubdominio = httpsCallable(functions, 'criarSubdominio');
+
+// Monitoramento de autenticação
+export const monitorarAuthState = (callback) => {
+  return onAuthStateChanged(auth, callback);
+};
+
+// Exportações básicas
+export { app, auth, db, functions };

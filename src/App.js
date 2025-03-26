@@ -1,37 +1,32 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import Veiculos from "./pages/Veiculos";
-import DetalhesVeiculo from "./pages/DetalhesVeiculo";
-import Login from "./pages/Login";
-import Cadastro from "./pages/Cadastro";
-import Perfil from "./pages/Perfil";
-import PrivateRoute from "./components/PrivateRoute"; // Criaremos este componente
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-const App = () => {
+// Importe suas páginas
+import Home from './pages/Home';
+import Veiculos from './pages/Veiculos';
+import Login from './pages/Login';
+import Cadastro from './pages/Cadastro';
+import Perfil from './pages/Perfil';
+import PrivateRoute from './components/PrivateRoute';
+
+function App() {
   return (
     <Router>
-      <Routes>
-        {/* Rota de Login */}
-        <Route path="/login" element={<Login />} />
-        
-        {/* Rota de Cadastro */}
-        <Route path="/cadastro" element={<Cadastro />} />
-        
-        {/* Rota principal redireciona para login (ou veículos se autenticado) */}
-        <Route path="/" element={<Navigate to="/login" />} />
-        
-        {/* Rotas protegidas (requerem autenticação) */}
-        <Route element={<PrivateRoute />}>
-          <Route path="/veiculos/:estado/:categoria" element={<Veiculos />} />
-          <Route path="/veiculo/:id" element={<DetalhesVeiculo />} />
-          <Route path="/perfil" element={<Perfil />} />
-        </Route>
-        
-        {/* Fallback para rotas não encontradas */}
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
+      <div className="app-container">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/veiculos" element={<Veiculos />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/perfil" element={
+            <PrivateRoute>
+              <Perfil />
+            </PrivateRoute>
+          } />
+        </Routes>
+      </div>
     </Router>
   );
-};
+}
 
 export default App;

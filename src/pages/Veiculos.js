@@ -1,22 +1,21 @@
+// src/pages/Veiculos.js
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchVeiculos } from '../api/veiculos';
 import VeiculoCard from '../components/VeiculoCard';
-import Header from '../components/Header'; // Importe o Header
-import Footer from '../components/Footer'; // Importe o Footer
-import Profile from '../components/Profile'; // Importe o Profile
+
 
 const Veiculos = () => {
   const [veiculos, setVeiculos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const { estado } = useParams();
+  const { estado, categoria } = useParams();
 
   useEffect(() => {
     const getVeiculos = async () => {
       try {
-        const data = await fetchVeiculos(estado);
+        const data = await fetchVeiculos(estado, categoria);
         setVeiculos(data);
       } catch (err) {
         setError(err.message);
@@ -26,38 +25,23 @@ const Veiculos = () => {
     };
 
     getVeiculos();
-  }, [estado]);
+  }, [estado, categoria]);
 
   if (loading) return <div>Carregando veículos...</div>;
   if (error) return <div>Erro ao carregar veículos: {error}</div>;
 
   return (
-    <div>
-      {/* Adicione o Header */}
-      <Header empresa="Nome da Empresa" telefone="(XX) XXXX-XXXX" instagram="@empresa" />
-
-      {/* Adicione o Profile */}
-      <Profile
-        nome="Nome do Vendedor"
-        foto="https://via.placeholder.com/100" // URL da foto
-        classe="Vendedor Externo"
-      />
-
-      <div style={styles.container}>
-        <h1 style={styles.title}>Catálogo de Veículos</h1>
-        <div style={styles.grid}>
-          {veiculos.length > 0 ? (
-            veiculos.map((veiculo) => (
-              <VeiculoCard key={veiculo.id} veiculo={veiculo} />
-            ))
-          ) : (
-            <p>Nenhum veículo encontrado.</p>
-          )}
-        </div>
+    <div style={styles.container}>
+      <h1 style={styles.title}>Veículos Disponíveis em {estado} - Categoria: {categoria}</h1>
+      <div style={styles.grid}>
+        {veiculos.length > 0 ? (
+          veiculos.map((veiculo) => (
+            <VeiculoCard key={veiculo.id} veiculo={veiculo} />
+          ))
+        ) : (
+          <p>Nenhum veículo encontrado.</p>
+        )}
       </div>
-
-      {/* Adicione o Footer */}
-      <Footer />
     </div>
   );
 };
