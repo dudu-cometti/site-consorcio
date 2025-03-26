@@ -1,29 +1,31 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-
 admin.initializeApp();
 
-exports.criarSubdominio = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      'unauthenticated',
-      'Acesso negado'
-    );
-  }
+exports.atualizarMetricas = functions.firestore
+  .document('clientes/{clienteId}')
+  .onCreate(async (snap, context) => {
+    const clienteData = snap.data();
+    const vendedorId = clienteData.vendedorId;
+    
+    if (!vendedorId) return;
 
-  const subdominio = data.nome
-    .toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9-]/g, '');
+    const metricsRef = admin.firestore().doc(`metricas_vendedores/${vendedorId}`);
+    
+    // Atualiza contatos
+    await metricsRef.set({
+      contatos: admin.firestore.FieldValue.increment(1),
+      ultimaAtualizacao: admin.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
 
-  await admin.firestore()
-    .collection('subdominios')
-    .doc(context.auth.uid)
-    .set({
-      subdominio,
-      criadoEm: admin.firestore.FieldValue.serverTimestamp()
-    });
-
-  return { url: `https://${subdominio}.seusite.com` };
-});
+    // Atualiza modelo mais popular (exemplo simplificado)
+    if (clienteData.modeloInteresse) {
+      const modeloStatsRef = admin.firestore().doc(`modelos_stats/${clienteData.modeloInteresse}`);
+      await modeloStatsRef.set({
+        count: admin.firestore.FieldValue.increment(1),
+        vendedorId: vendedorId
+      }, { merge: true });
+    }
+    
+    return true;
+  });

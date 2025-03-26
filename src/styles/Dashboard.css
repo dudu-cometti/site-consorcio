@@ -1,0 +1,118 @@
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .metrics-section {
+    margin-bottom: 40px;
+  }
+  
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .metric-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  
+  .metric-card h3 {
+    color: #555;
+    margin-bottom: 10px;
+  }
+  
+  .metric-card p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  .link-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+  }
+  
+  .link-box {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+  }
+  
+  .link-box input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .link-box button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 0 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .link-help {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .clientes-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+  
+  .cliente-card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .cliente-card p {
+    margin: 5px 0;
+  }
+  
+  .status-novo {
+    color: #3498db;
+  }
+  .status-em_negociacao {
+    color: #f39c12;
+  }
+  .status-contratado {
+    color: #2ecc71;
+  }
+  .status-perdido {
+    color: #e74c3c;
+  }
+  
+  .loading {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+  }
+  
+  .spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
